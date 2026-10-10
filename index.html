@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>校园失物招领处</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 评审用原型导航 -->
+<aside class="rail">
+  <div class="rail-h">Prototype · v1.0</div>
+  <h2 class="rail-title">校园失物招领处</h2>
+  <p class="rail-sub">点击左侧页面直接跳转，也可在手机内点击卡片、按钮完成真实流程。</p>
+  <ul class="rail-list" id="railList"></ul>
+  <div class="rail-foot">
+    数据保存在浏览器本地<br>
+    重置演示数据：<a href="#" id="resetData" style="color:var(--lost);font-weight:700;text-decoration:none">点击重置</a>
+  </div>
+</aside>
+
+<div class="phone-wrap" id="phoneWrap">
+<div class="phone">
+  <div class="viewport">
+    <div class="statusbar">
+      <span id="clock">9:41</span>
+      <span class="sb-r">
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" style="opacity:.85"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4" y="5" width="3" height="6" rx="1"/><rect x="8" y="2.5" width="3" height="8.5" rx="1"/><rect x="12" y="0" width="3" height="11" rx="1"/></svg>
+        <span class="sb-bat"></span>
+      </span>
+    </div>
+
+    <!-- ①首页 -->
+    <section class="screen" id="s-home">
+      <div class="screen-body">
+        <div class="home-head">
+          <div class="eyebrow">Campus Lost &amp; Found</div>
+          <h1>校园失物招领处</h1>
+          <p>东西丢了，先在这儿挂个号。所有信息集中发布、可搜索、状态随时更新。</p>
+          <button class="searchbar" onclick="go('search')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+            <span>搜物品名称，如「校园卡」「雨伞」</span>
+          </button>
+        </div>
+        <div class="seg" id="homeSeg">
+          <button data-f="all" class="on">全部<span class="count" id="c-all"></span></button>
+          <button data-f="lost">寻物<span class="count" id="c-lost"></span></button>
+          <button data-f="found">招领<span class="count" id="c-found"></span></button>
+        </div>
+        <div class="list-head">
+          <span class="t" id="homeCount">—</span>
+          <span class="tape" id="homeTicker">今日新增 —</span>
+        </div>
+        <div class="list" id="homeList"></div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item on" onclick="go('home',{reset:1})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9.6V20h13V9.6"/></svg>
+          首页
+        </button>
+        <button class="nav-pub" onclick="go('publish')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          发布
+        </button>
+        <button class="nav-item" onclick="go('mine')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.6 20c.6-3.7 3.7-6 7.4-6s6.8 2.3 7.4 6"/></svg>
+          我的
+        </button>
+      </nav>
+    </section>
+
+    <!-- ②搜索页 -->
+    <section class="screen no-nav" id="s-search" hidden>
+      <div class="appbar">
+        <button class="icon-btn" onclick="back()" aria-label="返回">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h1>搜索</h1>
+        <span class="spacer"></span>
+        <span class="mini-note">关键词匹配</span>
+      </div>
+      <div class="screen-body">
+        <div style="padding:0 20px 12px">
+          <div class="searchbar" style="box-shadow:3px 3px 0 rgba(15,27,42,.9)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="opacity:.55"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+            <input id="q" class="control" style="border:none;padding:0;background:transparent" placeholder="输入物品名称关键词" autocomplete="off">
+            <button class="icon-btn" id="clearQ" style="width:22px;height:22px;border:none;box-shadow:none;background:var(--paper-2)" aria-label="清空">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="width:12px;height:12px"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="chips" style="padding:0 20px 4px" id="hotWords"></div>
+        <div class="seg" id="searchSeg" style="margin-top:14px">
+          <button data-f="all" class="on">全部</button>
+          <button data-f="lost">寻物</button>
+          <button data-f="found">招领</button>
+        </div>
+        <div class="list-head"><span class="t" id="searchCount">搜索结果</span></div>
+        <div class="list" id="searchList"></div>
+      </div>
+    </section>
+
+    <!-- ③发布信息页 -->
+    <section class="screen no-nav" id="s-publish" hidden>
+      <div class="appbar">
+        <button class="icon-btn" onclick="back()" aria-label="返回">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h1>发布信息</h1>
+        <span class="spacer"></span>
+        <span class="mini-note">带 * 为必填</span>
+      </div>
+      <div class="screen-body">
+        <div class="form">
+          <div class="field">
+            <label>信息类型 <span class="req">*</span></label>
+            <div class="type-pick" id="typePick">
+              <button class="type-opt" data-t="lost">
+                <div class="tt">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+                  我丢了东西
+                </div>
+                <div class="td">发布寻物信息，请同学帮忙留意</div>
+              </button>
+              <button class="type-opt" data-t="found">
+                <div class="tt">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+                  我捡到东西
+                </div>
+                <div class="td">发布招领信息，等失主来认领</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>物品名称 <span class="req">*</span></label>
+            <input id="f-title" class="control" placeholder="如：校园卡 / 黑色雨伞 / 蓝牙耳机" maxlength="20">
+            <span class="err-msg" data-for="f-title">请填写物品名称</span>
+          </div>
+
+          <div class="field">
+            <label>物品类别</label>
+            <div class="chips" id="catChips"></div>
+          </div>
+
+          <div class="field">
+            <label>地点 <span class="req">*</span></label>
+            <input id="f-place" class="control" placeholder="如：图书馆 3 楼自习区 / 第二教学楼 A301">
+            <span class="err-msg" data-for="f-place">请填写丢失或拾获地点</span>
+          </div>
+
+          <div class="field">
+            <label>时间 <span class="req">*</span></label>
+            <input id="f-time" class="control" type="datetime-local">
+            <span class="err-msg" data-for="f-time">请选择时间</span>
+          </div>
+
+          <div class="field">
+            <label>详细描述 <span class="hint">可写特征，便于核对</span></label>
+            <textarea id="f-desc" class="control" placeholder="如：卡面姓名首字母 W，尾号 0421，背面贴有蓝色贴纸"></textarea>
+          </div>
+
+          <div class="field">
+            <label>联系方式 <span class="req">*</span></label>
+            <input id="f-contact" class="control" placeholder="手机号 / 微信号，仅详情页展示">
+            <span class="err-msg" data-for="f-contact">请填写联系方式</span>
+          </div>
+
+          <div class="field">
+            <label>物品照片 <span class="hint">选填</span></label>
+            <button class="upload" id="uploadBox" onclick="document.getElementById('fileInput').click()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><circle cx="8.6" cy="10" r="1.6"/><path d="M3.5 17l5-4.5 4 3.4 3-2.4 5 3.5"/></svg>
+              <span>点击上传（选填）</span>
+            </button>
+            <input type="file" id="fileInput" accept="image/*" hidden>
+          </div>
+        </div>
+      </div>
+      <div class="actionbar">
+        <div class="row">
+          <button class="btn btn-ghost" onclick="back()" style="flex:0 0 40%">取消</button>
+          <button class="btn btn-primary" id="submitBtn" onclick="submitPublish()">发布</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④信息详情页 -->
+    <section class="screen no-nav" id="s-detail" hidden>
+      <div class="appbar">
+        <button class="icon-btn" onclick="back()" aria-label="返回">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <h1>信息详情</h1>
+        <span class="spacer"></span>
+        <span class="mini-note" id="detailCode2">—</span>
+      </div>
+      <div class="screen-body" id="detailBody"></div>
+      <div class="actionbar" id="detailActions"></div>
+    </section>
+
+    <!-- ⑤我的发布页 -->
+    <section class="screen" id="s-mine" hidden>
+      <div class="screen-body">
+        <div class="appbar" style="padding-bottom:6px">
+          <h1 style="font-size:13px;font-family:var(--font-mono);letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;font-weight:600">My Posts</h1>
+          <span class="spacer"></span>
+          <span class="mini-note">状态可随时更新</span>
+        </div>
+        <div class="mine-head">
+          <h1>我的发布</h1>
+          <div class="stat" id="mineStat">共 <b>0</b> 条 · 进行中 <b>0</b> 条 · 已完结 <b>0</b> 条</div>
+        </div>
+        <div class="seg" id="mineSeg">
+          <button data-f="all" class="on">全部</button>
+          <button data-f="open">进行中</button>
+          <button data-f="closed">已完结</button>
+        </div>
+        <div class="list" id="mineList"></div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item" onclick="go('home',{reset:1})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9.6V20h13V9.6"/></svg>
+          首页
+        </button>
+        <button class="nav-pub" onclick="go('publish')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          发布
+        </button>
+        <button class="nav-item on" onclick="go('mine',{reset:1})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.6 20c.6-3.7 3.7-6 7.4-6s6.8 2.3 7.4 6"/></svg>
+          我的
+        </button>
+      </nav>
+    </section>
+
+    <!-- ⑥发布成功页 -->
+    <section class="screen no-nav" id="s-success" hidden>
+      <div class="done-wrap">
+        <div class="big-stamp">
+          <div>
+            <div class="bt" id="successStamp">已发布</div>
+            <div class="bs">CAMPUS L&amp;F</div>
+          </div>
+        </div>
+        <h2 id="successTitle">发布成功</h2>
+        <p id="successDesc">信息已进入招领处列表，其他同学可以直接搜索到它。</p>
+        <div class="receipt" id="successReceipt"></div>
+      </div>
+      <div class="actionbar">
+        <button class="btn btn-primary" onclick="go('home',{reset:1})">返回首页</button>
+        <div class="row">
+          <button class="btn btn-ghost" onclick="go('mine',{reset:1})">查看我的发布</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="toast" id="toast"></div>
+  </div>
+</div>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', startApp);
+</script>
+</body>
+</html>
