@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>单元测试 —— 校园失物招领处</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background:#E7EBF0; margin:0; padding:24px; color:#0F1B2A; }
+  h1 { text-align:center; margin-bottom:4px; }
+  .subtitle { text-align:center; color:#5A6B7D; margin-bottom:24px; font-size:14px; }
+  .test-summary { text-align:center; font-size:18px; font-weight:700; padding:16px; border-radius:14px; margin-bottom:20px; }
+  .test-summary.all-pass { background:#E6F3EE; color:#15795A; border:2px solid #C4E2D6; }
+  .test-summary.has-fail { background:#FCEDE9; color:#D2401E; border:2px solid #F3CFC5; }
+  .test-group { background:#fff; border-radius:14px; margin-bottom:12px; overflow:hidden; box-shadow:0 1px 2px rgba(15,27,42,.06),0 6px 18px -8px rgba(15,27,42,.18); }
+  .test-group-header { padding:14px 20px; font-weight:700; font-size:16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #eee; }
+  .test-group.pass .test-group-header { background:#E6F3EE; }
+  .test-group.fail .test-group-header { background:#FCEDE9; }
+  .test-status { font-size:18px; }
+  .test-count { margin-left:auto; font-size:13px; color:#5A6B7D; font-weight:normal; }
+  .test-list { list-style:none; padding:8px 20px; }
+  .test-list li { padding:6px 0; font-size:14px; font-family:ui-monospace,monospace; }
+  .test-list li.pass { color:#15795A; }
+  .test-list li.fail { color:#D2401E; }
+  .test-list li span { display:inline-block; width:20px; font-weight:bold; }
+  .back-link { display:inline-block; margin-bottom:16px; text-decoration:none; color:#0F1B2A; font-weight:700; }
+</style>
+</head>
+<body>
+  <h1>校园失物招领处 —— 单元测试</h1>
+  <p class="subtitle">用谷歌浏览器打开本页面即可运行全部测试</p>
+  <a href="../index.html" class="back-link">← 返回首页</a>
+  <div id="test-results"><p style="text-align:center;color:#8C99A8;">正在运行测试...</p></div>
+
+  <script src="../js/icons.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="tests.js"></script>
+  <script>runAllTests();</script>
+</body>
+</html>
